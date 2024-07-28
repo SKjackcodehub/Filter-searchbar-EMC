@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Filter Application</title>
+</head>
+<body>
+    <style>
+        body{
+            background-color: rgb(222, 165, 255);
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow:black;
+            border-radius: 8px;
+        }
+        button {
+           padding: 10px 20px;
+           font-size: 13px;
+           color: #fff;
+           background-color: #0b0b0b;
+           border: none;
+           border-radius: 5px;
+           cursor: pointer;
+           transition: background-color 0.3s ease;
+        }
+        input{
+            font-size: 20px;
+            width: 350px;
+            border: solid 2px black;
+            border-radius: 4px;
+        }
+
+    </style>
+    <div class="container">
+        <h1>Post Filter Application</h1>
+        <div class="input-group">
+            <input type="text" id="search-input" placeholder="Search....." />
+            <button id="search-btn">Search</button>
+        </div>
+        <div id="results"></div>
+    </div>
+
+    <script>
+        async function fetchAndFilterPosts(word) {
+        const apiUrl = 'https://jsonplaceholder.typicode.com/posts';
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.innerHTML = '';
+
+    try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) throw new Error(`Failed to fetch posts: ${response.status} ${response.statusText}`);
+        
+        const posts = await response.json();
+        const filteredPosts = posts.filter(post => post.title.toLowerCase().includes(word.toLowerCase()));
+
+        resultsDiv.innerHTML = filteredPosts.length > 0 
+            ? filteredPosts.map(post => `<div class="post"><h2>${post.title}</h2><p>${post.body}</p></div>`).join('') : `<p>No posts found with the word "${word}" in the title.</p>`;
+    } catch (error) {
+        resultsDiv.innerHTML = `<p>An error occurred: ${error.message}</p>`;
+    }
+}
+
+    document.getElementById('search-btn').addEventListener('click', () => {
+    const word = document.getElementById('search-input').value.trim();
+    document.getElementById('results').innerHTML = word 
+    ? fetchAndFilterPosts(word) : '<p>Please enter a word to search.</p>';
+});
+
+    </script>
+  
+</body>
+
+</html>
