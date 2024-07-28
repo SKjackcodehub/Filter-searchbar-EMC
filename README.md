@@ -26,4 +26,4 @@ index.html: The main HTML file that contains the structure of the web page.
 style.css: The CSS file that contains the styles for the web page.
 script.js: The JavaScript file that contains the functionality for fetching and filtering the posts.
 
-Link: 
+Link: https://skjackcodehub.github.io/Filter-searchbar-EMC/
